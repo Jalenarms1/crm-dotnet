@@ -1,0 +1,59 @@
+﻿@page
+@model RazorCRM.Pages.AuthModel
+@{
+    Layout = "_AuthLayout";
+}
+
+<form method="post" asp-page-handler="@(Model.IsLogin ? "Login" : "Signup")">
+    <div class="flex flex-col gap-4 overflow-auto">
+        <p class="text-3xl text-gray-800 font-semibold">
+            @(Model.IsLogin ? "Login" : "Sign up")
+        </p>
+        @if (!Model.IsLogin) {
+            <div class="flex flex-col gap-1">
+                <label for="Name" class="text-sm text-gray-500">Name</label>
+                <input required name="Name" id="Name" type="text" class="border border-gray-200 rounded-sm w-96 p-1 shadow-sm shadow-gray-300 focus:outline-none">
+            </div>
+
+        }
+        <div class="flex flex-col gap-1">
+            <label for="email" class="text-sm text-gray-500">Email</label>
+            <input required name="Email" id="email" type="text" class="border border-gray-200 rounded-sm w-96 p-1 shadow-sm shadow-gray-300 focus:outline-none">
+            @if (@Model.emailError is not null) {
+                <p class="text-sm text-red-500">@Model.emailError</p>
+            }
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="password" class="text-sm text-gray-500">Password</label>
+            <input required name="Password" id="password" type="text" class="border border-gray-200 rounded-sm w-96 p-1 shadow-sm shadow-gray-300 focus:outline-none">
+        </div>
+        @if(!@Model.IsLogin) {
+            <div class="flex flex-col gap-1">
+                <label for="confirmPassword" class="text-sm text-gray-500">Confirm Password</label>
+                <input required name="ConfirmPassword" id="confirmPassword" type="text" class="border border-gray-200 rounded-sm w-96 p-1 shadow-sm shadow-gray-300 focus:outline-none">
+            </div>
+        }
+
+        <div class="flex flex-col gap-2 w-96">
+            <button type="submit" class="bg-gray-900 p-2 rounded-sm text-gray-300 rounded-md font-semibold active:opacity-75">Continue</button>
+            @if(@Model.submissionError is not null) {
+                <p class="text-xs text-red-500 text-center">@Model.submissionError</p>
+            }
+        </div>
+
+        @if(Model.IsLogin) {
+            <div class="flex flex-col items-center mt-2 gap-10">
+                <p class="w-72 text-center text-xs">By continuing,active you agree to your <span class="underline">Terms of Service</span> and <span class="underline">Privacy Policy</span></p>
+                <p class="text-xs">Need to sign up? Click <a asp-page="/auth" asp-route-isLogin="@(!Model.IsLogin)" class="underline text-blue-500">here</a></p>
+            </div>
+
+        } 
+        else {
+            <div class="flex flex-col items-center mt-2 gap-10">
+                <p class="w-72 text-center text-xs">By continuing,active you agree to your <span class="underline">Terms of Service</span> and <span class="underline">Privacy Policy</span></p>
+                <p class="text-xs">Already have and account? Click <a asp-page="/auth" asp-route-isLogin="@(!Model.IsLogin)" class="underline text-blue-500">here</a></p>
+            </div>
+        }
+    </div>
+
+</form>

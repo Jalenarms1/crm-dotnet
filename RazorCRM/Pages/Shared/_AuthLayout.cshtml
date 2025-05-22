@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RazorCRM</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RazorCRM.styles.css" asp-append-version="true" />
+</head>
+<body class="">
+    <div class=" flex w-full">
+        <div class="flex min-h-screen w-[45vw] bg-gray-800 relative">
+            <div class="inset-0 absolute bg-slate-700/90 px-20 py-10">
+            <svg class="text-white/50" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-swatch-book-icon lucide-swatch-book"><path d="M11 17a4 4 0 0 1-8 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2Z"/><path d="M16.7 13H19a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H7"/><path d="M 7 17h.01"/><path d="m11 8 2.3-2.3a2.4 2.4 0 0 1 3.404.004L18.6 7.6a2.4 2.4 0 0 1 .026 3.434L9.9 19.8"/></svg>
+            <p class="font-semibold text-white/50">Crunch Time</p>
+            </div>
+            <img src="~/images/login-img.jpg" class="object-fill w-full h-full" />
+        </div>
+        <main role="main" class="pb-3 h-screen overflow-auto flex w-[55vw] p-10 flex-col">
+            <a href="/" class="flex text-gray-400 gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                <p>Back</p>
+            </a>
+            <div class="flex-1 w-full flex justify-center items-center">
+                @RenderBody()
+
+            </div>
+        </main>
+    </div>
+
+    @* <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - RazorCRM - <a asp-area="" asp-asp-page="Auth">Privacy</a>
+        </div>
+    </footer> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
