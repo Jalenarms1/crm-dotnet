@@ -29,7 +29,8 @@ jobs:
         run: dotnet restore FluentPWA/FluentPWA.csproj
 
       - name: Publish app
-        run: dotnet publish FluentPWA/FluentPWA.csproj -c Release -o publish
+        run: dotnet publish FluentPWA/FluentPWA.csproj -c Release -o FluentPWA/publish
+
 
       
       - name: Build And Deploy
