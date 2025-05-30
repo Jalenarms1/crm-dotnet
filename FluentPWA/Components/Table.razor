@@ -10,12 +10,12 @@
                 <PropertyColumn Property="@(c => c.Email)" Align="Align.Start" />
                 <PropertyColumn Property="@(c => c.DateOfBirth)" Align="Align.Start" />
                 <TemplateColumn Title="Actions" Width="100px" Align="Align.Start">
-                    <TemplateContext>
-                        @{
+                    <ChildContent Context="row">
+                        @* @{
                             var row = context as Patient;
-                        }
+                        } *@
                         <FluentButton OnClick="() => Console.WriteLine(row.FirstName)">View</FluentButton>
-                    </TemplateContext>
+                    </ChildContent>
                 </TemplateColumn>
             </ChildContent>
             <EmptyContent>
