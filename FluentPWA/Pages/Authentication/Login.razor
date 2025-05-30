@@ -7,7 +7,7 @@
 
 @code {
 
-    private void OnInitialized(){
+    protected override void OnInitialized(){
         Console.WriteLine(Navigation.Uri);
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
 
