@@ -21,4 +21,8 @@
     <Folder Include="wwwroot/" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarelinkModels\CarelinkModels.csproj" />
+  </ItemGroup>
+
 </Project>

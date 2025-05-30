@@ -1,0 +1,100 @@
+@inject HttpClient httpClient
+
+<div class=" w-full flex flex-col gap-2">
+    <FluentPaginator State="@paginationState" />
+    <div style="overflow-x: auto; width: 100%;">
+        <FluentDataGrid @ref="grid" Items=@items RowSize="DataGridRowSize.Medium" Pagination=@paginationState  DisplayMode="DataGridDisplayMode.Table" Style="overflow-x: auto; width: 100%;"  GenerateHeader="@GenerateHeaderOption.Sticky">
+            <ChildContent>
+                <PropertyColumn Property="@(c => c.FirstName)" Sortable="true"  />
+                <PropertyColumn Property="@(c => c.LastName)" />
+                <PropertyColumn Property="@(c => c.Email)" Align="Align.Start" />
+                <PropertyColumn Property="@(c => c.DateOfBirth)" Align="Align.Start" />
+                <TemplateColumn Title="Actions" Width="100px" Align="Align.Start">
+                    <TemplateContext>
+                        @{
+                            var row = context as Patient;
+                        }
+                        <FluentButton OnClick="() => Console.WriteLine(row.FirstName)">View</FluentButton>
+                    </TemplateContext>
+                </TemplateColumn>
+            </ChildContent>
+            <EmptyContent>
+                <FluentIcon Value="@(new Icons.Filled.Size24.Crown())" Color="@Color.Accent" />&nbsp; Nothing to see here. Carry on!
+            </EmptyContent>
+            <LoadingContent>
+                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+                    Loading...<br />
+                    <FluentProgress Width="240px" />
+                </FluentStack>
+            </LoadingContent>
+        </FluentDataGrid>
+
+    </div>
+    <FluentPaginator State="@paginationState" />
+</div>
+
+<br />
+
+<FluentButton OnClick="SimulateDataLoading">Simulate data loading</FluentButton>
+
+
+@code {
+    FluentDataGrid<Patient>? grid;
+    FluentSwitch? _clearToggle;
+
+    public PaginationState paginationState = new PaginationState{ItemsPerPage = 10 };
+
+    bool _clearItems = false;
+    public record SampleGridData(string Item1, string Item2, string Item3, string Item4, string Item5, string Item6);
+
+    IQueryable<Patient>? items;
+    @* IQueryable<SampleGridData>? items = Enumerable.Empty<SampleGridData>().AsQueryable(); *@
+
+    private IQueryable<SampleGridData> GenerateSampleGridData(int size)
+    {
+        SampleGridData[] data = new SampleGridData[size];
+
+        for (int i = 0; i < size; i++)
+        {
+            data[i] = new SampleGridData($"value {i}-1", $"value {i}-2", $"value {i}-3 asdasdsdsadasdasdsdasds", $"value {i}-4", $"value {i}-5", $"value {i}-6");
+        }
+        return data.AsQueryable();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await SetItems();
+        @* items = GenerateSampleGridData(500); *@
+    }
+
+    private async Task SetItems() 
+    {
+        var patients = await httpClient.GetFromJsonAsync<List<Patient>>("http://localhost:5291/api/patient/list");
+        Console.WriteLine(patients);
+        items = patients?.AsQueryable();
+    }
+
+    private void ToggleItems()
+    {
+        if (_clearItems)
+        {
+            items = null;
+        }
+        else
+        {
+            SetItems();
+        }
+    }
+
+    private async Task SimulateDataLoading()
+    {
+        _clearItems = false;
+
+        items = null;
+        grid?.SetLoadingState(true);
+        SetItems();
+
+        await Task.Delay(1500);
+
+        grid?.SetLoadingState(false);
+    }
+}

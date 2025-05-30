@@ -1,10 +1,14 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Text;
+using CRMApi.Enums;
 using CRMApi.Models;
 using CRMApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CRMApi.Controllers
 {
@@ -19,64 +23,19 @@ namespace CRMApi.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login([FromBody] User user)
+        [HttpGet]
+        public IActionResult GetMe()
         {
-
-            Console.WriteLine($"{user.Email} hit");
-
-            var hasher = new PasswordHasher<object>();
-
-            var hashedPassword = hasher.HashPassword(new object(), user.Password);
-            Console.WriteLine($"Hashed pass: {hashedPassword}");
-
-            var foundUser = await _userService.GetUserByEmail(user.Email);
-
-            if (foundUser is null)
+            var claims = HttpContext.User.Claims;
+             // Iterate through claims
+            foreach (var claim in claims)
             {
-                return NotFound("no user found");
+                Console.WriteLine($"Type: {claim.Type}, Value: {claim.Value}");
             }
-
-            if (hasher.VerifyHashedPassword(new object(), foundUser.Password, user.Password) == PasswordVerificationResult.Failed)
-            {
-                return BadRequest("invalid credentials");
-            }
+            Console.WriteLine("claim");
+            Console.WriteLine(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> NewUser([FromBody] User user)
-        {
-            try
-            {
-                var email = new MailAddress(user.Email);
-                if (email.Address != user.Email)
-                {
-                    throw new Exception();
-                }
-
-                var existingUser = await _userService.GetUserByEmail(user.Email);
-                if (existingUser is not null)
-                {
-                    return BadRequest("existing user with the current email provided");
-                }
-
-                Console.WriteLine($"{user.Name}");
-
-                var hashedPassword = new PasswordHasher<object>().HashPassword(new object(), user.Password);
-
-                user.Password = hashedPassword;
-
-                await _userService.CreateUser(user);
-
-                return Ok();
-
-            }
-            catch
-            {
-                return BadRequest("please enter a valid email address");
-            }
         }
     }
     

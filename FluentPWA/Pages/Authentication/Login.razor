@@ -1,0 +1,17 @@
+@page "/authentication/login"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+
+<RemoteAuthenticatorView Action="login" />
+<p>Hello</p>
+
+@code {
+
+    private void OnInitialized(){
+        Console.WriteLine(Navigation.Uri);
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+
+        Console.WriteLine(uri);
+    }
+    
+}

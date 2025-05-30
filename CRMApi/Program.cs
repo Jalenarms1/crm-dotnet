@@ -19,7 +19,19 @@ builder.Services.AddDbContext<AppDbContext>(opts =>
     )
 );
 
+builder.Services.AddCors(options =>
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5268")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    })
+);
+
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<PatientService>();
 
 
 
@@ -27,20 +39,31 @@ builder.Services.AddControllers()
     .AddJsonOptions(options => 
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     );
-    
+
+
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+app.UseCors("AllowSpecificOrigin");
 
-    var strategy = dbContext.Database.CreateExecutionStrategy();
-    await strategy.ExecuteAsync(async () =>
+try
+{
+    using (var scope = app.Services.CreateScope())
     {
-        await dbContext.Database.OpenConnectionAsync();
-        await dbContext.Database.CloseConnectionAsync();
-    });
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var strategy = dbContext.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
+        {
+            await dbContext.Database.OpenConnectionAsync();
+            await dbContext.Database.CloseConnectionAsync();
+        });
+    }
+
+}
+catch
+{
+    Console.WriteLine("Initiating db startup");
 }
 
 // Configure the HTTP request pipeline.
@@ -49,7 +72,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseMiddleware<LoggerMiddleware>();
-
+app.UseMiddleware<UserMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -69,7 +92,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

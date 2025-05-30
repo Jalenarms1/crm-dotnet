@@ -1,0 +1,104 @@
+@page "/patient-search"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Authorization
+@inject IDialogService DialogService
+@inject IAccessTokenProvider TokenProvider
+@inject NavigationManager Navigation
+@attribute [Authorize]
+
+<FluentStack  Orientation="Orientation.Vertical" Width="100%" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center" Class=" w-full min-h-screen mt-20 pb-20">
+    <FluentLabel Weight="FontWeight.Bold" Style="font-size: x-large; margin-bottom: 10px;">Find a Patient</FluentLabel>
+    <div class="flex gap-2">
+        <FluentIcon Value="@(new Icons.Regular.Size20.Search())" />
+        <FluentTextField TextFieldType="TextFieldType.Search" Placeholder="Search for patients by name, birthdate, MRN or SSN" Size="75" />
+    </div>
+    <div class="h-[0.5px] bg-slate-300 w-3/4 mt-10"></div>
+    <FluentStack Orientation="Orientation.Vertical" Width="75%" Class=" max-h-96 " VerticalGap="50" >
+        <FluentGrid Justify="JustifyContent.Center" Class="mt-10 w-full mx-auto">
+            <FluentGridItem class="" md="4">
+                <FluentCard >
+                    <div class="flex justify-between">
+                        <div class="flex items-center gap-2 ">
+                            <FluentIcon Value="@(new Icons.Regular.Size24.Calendar())" />
+                            <FluentLabel Class="font-semibold" Weight="FontWeight.Bolder">Schedule</FluentLabel>
+                        </div>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" />
+                    </div>
+                </FluentCard>
+            </FluentGridItem>
+            <FluentGridItem class="" md="4">
+                <FluentCard >
+                    <div class="flex justify-between">
+                        <div class="flex items-center gap-2 ">
+                            <FluentIcon Value="@(new Icons.Regular.Size24.Document())" />
+                            <FluentLabel Class="font-semibold" Weight="FontWeight.Bolder">Documentation</FluentLabel>
+                        </div>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" />
+                    </div>
+                </FluentCard>
+            </FluentGridItem>
+            <FluentGridItem class="" md="4">
+                <FluentCard >
+                    <div class="flex justify-between">
+                        <div class="flex items-center gap-2 ">
+                            <FluentIcon Value="@(new Icons.Regular.Size24.Mail())" />
+                            <FluentLabel Class="font-semibold" Weight="FontWeight.Bolder">Inbox</FluentLabel>
+                        </div>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" />
+                    </div>
+                </FluentCard>
+            </FluentGridItem>
+        </FluentGrid>
+        <div class="flex flex-col w-full">
+            <FluentLabel Style="font-size: large;" Weight="FontWeight.Bolder" Class="text-lg">Needs Review</FluentLabel>
+            <Table />
+
+        </div>
+    </FluentStack>
+    @* <OpenDialog /> *@
+</FluentStack>
+@* <RemoteAuthenticatorView Action="Login" /> *@
+
+
+@code {
+
+    @* protected override async Task OnInitializedAsync() {
+        Console.WriteLine("mounted");
+        var result = await TokenProvider.RequestAccessToken();
+
+        Console.WriteLine(result.Status);
+        if (result.TryGetToken(out var token))
+        {
+            Console.WriteLine(token.Value); // Should show the access token
+        }
+        else if (result.Status == AccessTokenResultStatus.RequiresRedirect) {
+
+            Console.WriteLine(result.InteractiveRequestUrl);
+            Navigation.NavigateTo($"{result.InteractiveRequestUrl}?login_hint=jalenarms@outlook.com");
+        }
+    } *@
+    @* protected override async Task OnInitializedAsync() {
+        DialogParameters parameters = new()
+        {
+            Title = $"Hello John",
+            PrimaryAction = "Yes",
+            PrimaryActionEnabled = false,
+            SecondaryAction = "No",
+            Width = "500px",
+            TrapFocus = false,
+            Modal = true,
+            PreventScroll = true 
+        };
+        IDialogReference dialog = await DialogService.ShowDialogAsync<SearchDialog>(new Patient { FirstName="John", LastName="Arms", DateOfBirth = DateTime.Today }, parameters);
+    } *@
+}using Microsoft.AspNetCore.Authorization;
+#line default
+#line hidden
+#nullable restore
+#line (6, 12) - (6, 15) "/Users/jalenarms/Desktop/Projects/crm-dotnet/FluentPWA/Pages/Patient Search.razor"
+    using Microsoft.AspNetCore.Authorization;
+#line default
+#line hidden
+#nullable restore
+#line (6, 12) - (6, 23) "/Users/jalenarms/Desktop/Projects/crm-dotnet/FluentPWA/Pages/Patient Search.razor"
+    

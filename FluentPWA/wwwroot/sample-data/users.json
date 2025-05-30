@@ -1,0 +1,62 @@
+[
+  {
+    "id": "de305d54-75b4-431b-adb2-eb6b9e546014",
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "role": "Admin"
+  },
+  {
+    "id": "5a1fc65e-89d1-4c56-8b2f-9f1c6dbd6c11",
+    "name": "Bob Smith",
+    "email": "bob.smith@example.com",
+    "role": "User"
+  },
+  {
+    "id": "b13fdd2d-2f4e-4721-b376-99a1a9a18c78",
+    "name": "Catherine Wu",
+    "email": "catherine.wu@example.com",
+    "role": "StaffTwo"
+  },
+  {
+    "id": "8e523ba4-393f-47c1-937d-d441dd59f70b",
+    "name": "Daniel Lee",
+    "email": "daniel.lee@example.com",
+    "role": "User"
+  },
+  {
+    "id": "27842af0-b56b-4a19-8474-44a78e1c2cf9",
+    "name": "Emma Green",
+    "email": "emma.green@example.com",
+    "role": "Admin"
+  },
+  {
+    "id": "8a7dbfe5-870e-4dcb-9e70-ccdb43fc6ac3",
+    "name": "Frank Martin",
+    "email": "frank.martin@example.com",
+    "role": "User"
+  },
+  {
+    "id": "a29c19ab-3baf-4a43-a178-37f502cb633e",
+    "name": "Grace Liu",
+    "email": "grace.liu@example.com",
+    "role": "User"
+  },
+  {
+    "id": "c5e8222c-f176-423e-8329-4172d8d21e4e",
+    "name": "Henry Adams",
+    "email": "henry.adams@example.com",
+    "role": "StaffOne"
+  },
+  {
+    "id": "3a10eb3d-5dbe-44cc-8704-6c6cb3f83d3a",
+    "name": "Isabel Brooks",
+    "email": "isabel.brooks@example.com",
+    "role": "User"
+  },
+  {
+    "id": "f729d831-0db3-4f0d-979b-85e5a610db4a",
+    "name": "Jack Turner",
+    "email": "jack.turner@example.com",
+    "role": "Admin"
+  }
+]

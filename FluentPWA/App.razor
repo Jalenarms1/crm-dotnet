@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@SelectLayout(routeData.PageType)">
+                <NotAuthorized>
+                    <RedirectToLogin />
+                </NotAuthorized>
+                <Authorizing>
+                    <p>Authorizing...</p>
+                </Authorizing>
+            </AuthorizeRouteView>
+            
+            
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+    
+
+</CascadingAuthenticationState>
+
+@code {
+    private Type? SelectLayout(Type page)
+    {
+        var noLayoutPages = new[]
+        {
+            typeof(FluentPWA.Pages.Login),
+        };
+
+        return noLayoutPages.Contains(page) ? typeof(NoLayout) : typeof(MainLayout);
+    }
+}
+

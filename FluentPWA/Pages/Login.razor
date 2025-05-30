@@ -1,0 +1,75 @@
+@page "/login"
+
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+@inject NavigationManager Navigation
+@inject IAccessTokenProvider TokenProvider
+
+
+<FluentStack Width="100%" Class="bg-slate-800 h-screen relative" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
+    <div class="w-96 h-[500px] z-[2] bg-slate-100 flex flex-col pt-8 px-8 items-center gap-10 rounded-md shadow-md shadow-slate-200">
+        <img src="images/dummy-logo.png" alt="placeholder-logo" class="w-40" />
+        
+        <FluentLabel Weight="FontWeight.Bold" Style="font-size: x-large;">Company Login</FluentLabel>
+
+        <div class="flex flex-col w-full">
+            <FluentLabel Class="text-slate-400" Style="opacity: calc(0.75); font-size: small;">Username</FluentLabel>
+            <FluentTextField @bind-Value="usernameInput"></FluentTextField>
+            @if(usernameErr){
+                <FluentLabel Style="font-size: smaller; color: red; margin-top: 5px;" Weight="FontWeight.Normal">Username is required</FluentLabel>
+            }
+        </div>
+
+        <button @onclick="HandleLogin" class="w-full bg-slate-800 p-2 rounded-sm text-white active:opacity-60 font-semibold">Continue</button>
+    </div>
+    <div class="absolute inset-0 z-[1]">
+        <img src="images/login-bg.jpg" class="object-fill w-full h-full" />
+    </div>
+    <div class="absolute inset-0 z-[1] bg-slate-900/75">
+    </div>
+
+    @if(startLogin) {
+        <RemoteAuthenticatorView Action="login" />
+    }
+
+</FluentStack>
+
+@code {
+    private bool startLogin = false;
+    private string usernameInput = "";
+    private bool usernameErr = false;
+
+    private RemoteAuthenticationContext<RemoteAuthenticationState> authParams;
+
+    private async void HandleLogin(){
+        usernameErr = false;
+        StateHasChanged();
+        Console.WriteLine(usernameInput);
+
+        if (string.IsNullOrEmpty(usernameInput)) {
+            usernameErr = true;
+            StateHasChanged();
+            return;
+        }
+
+        @* Navigation. *@
+        
+        var result = await TokenProvider.RequestAccessToken();
+
+
+        if(result.TryGetToken(out var token))
+        {
+            Console.WriteLine("Access token: " + token.Value);
+        }
+        else if (result.Status == AccessTokenResultStatus.RequiresRedirect)
+        {
+            Console.WriteLine("Redirecting to: " + result.InteractiveRequestUrl);
+
+            startLogin = true;
+            StateHasChanged();
+        }
+        else
+        {
+            Console.WriteLine("Token acquisition failed: " + result.Status);
+        }
+    }
+}

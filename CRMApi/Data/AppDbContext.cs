@@ -1,4 +1,5 @@
 using System;
+using CarelinkModels;
 using CRMApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ public class AppDbContext : DbContext
     {
 
     }
-    
+
     public DbSet<User> Users { get; set; }
+    public DbSet<Patient> Patients { get; set; }
 }
