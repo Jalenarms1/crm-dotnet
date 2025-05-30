@@ -38,9 +38,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_MOSS_0E681341E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          app_location: "FluentPWA" # App source code path
-          output_location: "FluentPWA/publish" # Built app content directory
-          api_location: "Api" # Optional: adjust or remove if not applicable
+          app_location: "FluentPWA/publish/wwwroot" # This is the real static output
+          output_location: "" # not needed since we're uploading already-built files
+          app_build_command: "" # <== disables Oryx automatic build
+          api_location: "" # Optional: disable API if not used
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
