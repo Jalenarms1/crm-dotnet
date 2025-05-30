@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CareLinkModels\CarelinkModels.csproj" />
+    <ProjectReference Include="..\CarelinkModels\CarelinkModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
