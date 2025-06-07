@@ -1,13 +1,15 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navigationManager
 
 <FluentLayout>
-    <div class="bg-slate-800  w-full p-1 px-8 flex items-center justify-between border-b border-white gap-2 shadow-sm shadow-slate-600 z-[2]">
+    <div class="bg-slate-800  w-full p-3 px-4 flex items-center justify-between border-b border-white gap-2 shadow-sm shadow-slate-600 z-[2]">
         <div class="flex items-center gap-2">
-            <FluentIcon Value="@(new Icons.Regular.Size24.LinkPerson())" Class="text-slate-300" Color="Color.Disabled"  />
-            <p class="text-white text-xl font-semibold pt-4">Carelink</p>
-
+            @* <FluentIcon Value="@(new Icons.Regular.Size24.LinkPerson())" Class="text-slate-300" Color="Color.Disabled"  />
+            <p class="text-white text-xl font-semibold pt-4">Carelink</p> *@
+            <img src="images/dummy-logo-2.png" alt="logo" class="w-40" />
         </div>
-        <FluentButton Title="Logout" Class="active:opacity-55">
+        <FluentButton Title="Logout" @onclick="Logout" Class="active:opacity-55">
             <FluentIcon Value="@(new Icons.Regular.Size20.DoorArrowLeft())" />
 
         </FluentButton>
@@ -29,6 +31,37 @@
         <FluentDialogProvider />
     </FluentStack>
 </FluentLayout>
+
+@code {
+    private bool _isFirstRender = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) 
+    {
+        if (firstRender || _isFirstRender) 
+        {
+            var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+
+            if (!authState.User.Identity.IsAuthenticated)
+            {
+                navigationManager.NavigateTo("/login");
+            }
+
+            _isFirstRender = true;
+        }
+    }
+
+    private async Task Logout()
+    {
+        try
+        {
+            navigationManager.NavigateToLogout("authentication/logout"); // Redirect to home or login page after logging out
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during logout: {ex.Message}");
+        }
+    }
+}
 
 
 

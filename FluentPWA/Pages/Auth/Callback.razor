@@ -1,0 +1,22 @@
+@page "/auth/callback"
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+
+<p>@userEmail</p>
+
+@code {
+    private string userEmail = "Loading...";
+    private bool _loaded = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        // Force a full reload to update auth state
+        navigationManager.NavigateTo("/", true); // true forces full reload (optional)
+    }
+}
+
+

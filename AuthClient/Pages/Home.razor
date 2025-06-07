@@ -1,0 +1,15 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Authorized</p>
+        <p>@context.User.Identity?.Name!</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>User NotAuthorized </p>
+    </NotAuthorized>
+</AuthorizeView>
+
+Welcome to your new Fluent Blazor app.

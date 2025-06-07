@@ -1,23 +1,16 @@
 @import '_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
 
-
-
-
 body {
     --body-font: "Segoe UI Variable", "Segoe UI", sans-serif;
     font-family: var(--body-font);
     font-size: var(--type-ramp-base-font-size);
     line-height: var(--type-ramp-base-line-height);
     margin: 0;
-    overflow: hidden;
 }
 
-/* Ensure the toggle arrow is visible */
-.FluentNavGroup .ms-NavGroup-chevron {
-    display: inline-block;
+.navmenu-icon {
+    display: none;
 }
-
-
 
 .main {
     min-height: calc(100dvh - 86px);

@@ -1,6 +1,5 @@
 using System;
 using CarelinkModels;
-using CRMApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRMApi.Data;

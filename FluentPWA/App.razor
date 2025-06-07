@@ -1,17 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.Net.Http.Headers
 @inject NavigationManager Navigation
+@inject IAccessTokenProvider tokenProvider
+@inject HttpClient httpClient
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@SelectLayout(routeData.PageType)">
-                <NotAuthorized>
+                @* <NotAuthorized>
                     <RedirectToLogin />
                 </NotAuthorized>
                 <Authorizing>
                     <p>Authorizing...</p>
-                </Authorizing>
+                </Authorizing> *@
             </AuthorizeRouteView>
+            @* <AuthorizeView>
+                @context.User.Identity.Name
+            </AuthorizeView> *@
             
             
         </Found>
@@ -27,11 +33,33 @@
 </CascadingAuthenticationState>
 
 @code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        try{
+            var result = await tokenProvider.RequestAccessToken();
+
+            if (result.TryGetToken(out var token))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
+            }
+
+            var resp = await httpClient.GetAsync("http://localhost:5179/api/user/getme");
+
+            Console.WriteLine(resp.StatusCode);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
     private Type? SelectLayout(Type page)
     {
         var noLayoutPages = new[]
         {
             typeof(FluentPWA.Pages.Login),
+            typeof(FluentPWA.Pages.Authentication)
         };
 
         return noLayoutPages.Contains(page) ? typeof(NoLayout) : typeof(MainLayout);

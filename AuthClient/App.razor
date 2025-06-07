@@ -1,0 +1,37 @@
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@SelectLayout(routeData.PageType)">
+                <NotAuthorized>
+                    @if (context.User.Identity?.IsAuthenticated != true)
+                    {
+                        <RedirectToLogin />
+                    }
+                    else
+                    {
+                        <p role="alert">You are not authorized to access this resource.</p>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code {
+    private Type? SelectLayout(Type page)
+    {
+        var authLayoutPages = new[]
+        {
+            typeof(AuthClient.Pages.Authentication),
+            typeof(AuthClient.Pages.Login)
+        };
+
+        return authLayoutPages.Contains(page) ? typeof(AuthLayout) : typeof(MainLayout);
+    }
+}

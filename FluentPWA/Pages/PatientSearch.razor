@@ -4,13 +4,16 @@
 @inject IDialogService DialogService
 @inject IAccessTokenProvider TokenProvider
 @inject NavigationManager Navigation
-@attribute [Authorize]
+@inject HttpClient httpClient
+@* @attribute [Authorize] *@
 
 <FluentStack  Orientation="Orientation.Vertical" Width="100%" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center" Class=" w-full min-h-screen mt-20 pb-20">
     <FluentLabel Weight="FontWeight.Bold" Style="font-size: x-large; margin-bottom: 10px;">Find a Patient</FluentLabel>
     <div class="flex gap-2">
         <FluentIcon Value="@(new Icons.Regular.Size20.Search())" />
-        <FluentTextField TextFieldType="TextFieldType.Search" Placeholder="Search for patients by name, birthdate, MRN or SSN" Size="75" />
+        <FluentTextField Value="@searchTerm" @oninput="HanldeInput" TextFieldType="TextFieldType.Search" Placeholder="Search for patients by name, birthdate, MRN or SSN" Size="75" />
+    
+
     </div>
     <div class="h-[0.5px] bg-slate-300 w-3/4 mt-10"></div>
     <FluentStack Orientation="Orientation.Vertical" Width="75%" Class=" max-h-96 " VerticalGap="50" >
@@ -51,7 +54,10 @@
         </FluentGrid>
         <div class="flex flex-col w-full">
             <FluentLabel Style="font-size: large;" Weight="FontWeight.Bolder" Class="text-lg">Needs Review</FluentLabel>
-            <Table />
+            @if(filteredPatients != null) {
+                <Table patients="filteredPatients" />
+
+            }
 
         </div>
     </FluentStack>
@@ -61,6 +67,29 @@
 
 
 @code {
+    private List<Patient>? patients {get;set;}
+    private List<Patient>? filteredPatients {get;set;}
+    private string searchTerm {get;set;} = string.Empty;
+
+    protected override async Task OnInitializedAsync() {
+        patients = await httpClient.GetFromJsonAsync<List<Patient>>("sample-data/patients.json");
+        filteredPatients = patients;
+        @* Console.WriteLine(patients); *@
+    }
+
+    private void HanldeInput(ChangeEventArgs e) 
+    {
+        searchTerm = e.Value?.ToString() ?? "";
+        Console.WriteLine(searchTerm);
+
+        if (searchTerm is not null)
+        {
+            Console.WriteLine("oninput");
+            filteredPatients = patients?.Where(patient => patient.FirstName.ToLower().Contains(searchTerm.ToLower())).ToList() ?? new();
+            Console.WriteLine(filteredPatients.Select(patient => patient.FirstName));
+        }
+        StateHasChanged();
+    }
 
     @* protected override async Task OnInitializedAsync() {
         Console.WriteLine("mounted");
@@ -74,7 +103,7 @@
         else if (result.Status == AccessTokenResultStatus.RequiresRedirect) {
 
             Console.WriteLine(result.InteractiveRequestUrl);
-            Navigation.NavigateTo($"{result.InteractiveRequestUrl}?login_hint=jalenarms@outlook.com");
+            Navigation.NavigateTo($"login");
         }
     } *@
     @* protected override async Task OnInitializedAsync() {

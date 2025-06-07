@@ -1,7 +1,52 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@using System.Security.Claims;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+@inject IAccessTokenProvider TokenProvider
 
-<h1>Hello, world!</h1>
 
-Welcome to your new Fluent Blazor app.
+<p>@userEmail</p>
+<p>@role</p>
+
+@code {
+    private string userEmail = "Loading...";
+    private string role = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthStateChanged;
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        SetUserEmail(authState);
+    }
+
+    private async void OnAuthStateChanged(Task<AuthenticationState> task)
+    {
+        Console.WriteLine("auth state change triggered");
+        var authState = await task;
+        SetUserEmail(authState);
+        StateHasChanged(); 
+    }
+
+    private void SetUserEmail(AuthenticationState authState)
+    {
+        var user = authState.User;
+
+        userEmail = user.Identity?.IsAuthenticated == true
+            ? user.FindFirst(c => c.Type == "preferred_username")?.Value
+                ?? user.FindFirst(c => c.Type == "email")?.Value
+                ?? "Email not found"
+            : "Not signed in.";
+
+        role = user.FindFirst(ClaimTypes.Role)?.Value ?? "no role";
+
+        Console.WriteLine($"Role: {role}");
+    }
+
+    public void Dispose()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthStateChanged;
+    }
+}

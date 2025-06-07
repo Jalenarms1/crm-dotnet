@@ -1,0 +1,88 @@
+@import "tailwindcss/preflight";
+
+.absolute {
+  position: absolute
+}
+
+.relative {
+  position: relative
+}
+
+.inset-0 {
+  inset: 0px
+}
+
+.z-\[2\] {
+  z-index: 2
+}
+
+.z-\[1\] {
+  z-index: 1
+}
+
+.flex {
+  display: flex
+}
+
+.h-screen {
+  height: 100vh
+}
+
+.h-96 {
+  height: 24rem
+}
+
+.h-full {
+  height: 100%
+}
+
+.w-full {
+  width: 100%
+}
+
+.w-96 {
+  width: 24rem
+}
+
+.items-center {
+  align-items: center
+}
+
+.justify-center {
+  justify-content: center
+}
+
+.rounded-sm {
+  border-radius: 0.125rem
+}
+
+.bg-slate-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1))
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1))
+}
+
+.bg-slate-700\/75 {
+  background-color: rgb(51 65 85 / 0.75)
+}
+
+.bg-zinc-700\/75 {
+  background-color: rgb(63 63 70 / 0.75)
+}
+
+.bg-zinc-900\/75 {
+  background-color: rgb(24 24 27 / 0.75)
+}
+
+.bg-slate-900\/75 {
+  background-color: rgb(15 23 42 / 0.75)
+}
+
+.object-fill {
+  -o-object-fit: fill;
+     object-fit: fill
+}

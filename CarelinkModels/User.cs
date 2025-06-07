@@ -1,12 +1,11 @@
 using System;
 using System.Text.Json.Serialization;
-using CRMApi.Enums;
 
-namespace CRMApi.Models;
+namespace CarelinkModels;
 
 public class User
 {
-   
+
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string? Name { get; set; }
@@ -16,3 +15,13 @@ public class User
 
     public UserRoleEnum? Role { get; set; } = UserRoleEnum.User;
 }
+
+public enum UserRoleEnum
+{
+    User,
+    Admin,
+    StaffOne,
+    StaffTwo,
+    StaffThree
+}
+

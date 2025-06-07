@@ -1,0 +1,19 @@
+@page "/login"
+@inject NavigationManager navigationManager
+
+<div class="h-screen w-full bg-slate-800 relative flex justify-center items-center">
+    <div class="w-96 h-96 bg-white rounded-sm z-[1]">
+        <FluentButton @onclick="HandleLogin">Login</FluentButton>
+    </div>
+    <div class="absolute w-full h-full">
+        <img src="login-bg.jpg" alt="" class="w-full object-fill z-[2]" />
+    </div>
+    <div class="absolute inset-0 bg-slate-900/75"></div>
+</div>
+
+@code {
+    private void HandleLogin()
+    {
+        navigationManager.NavigateTo("authentication/login");
+    }
+}

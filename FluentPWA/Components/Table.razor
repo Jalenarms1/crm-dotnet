@@ -3,12 +3,12 @@
 <div class=" w-full flex flex-col gap-2">
     <FluentPaginator State="@paginationState" />
     <div style="overflow-x: auto; width: 100%;">
-        <FluentDataGrid @ref="grid" Items=@items RowSize="DataGridRowSize.Medium" Pagination=@paginationState  DisplayMode="DataGridDisplayMode.Table" Style="overflow-x: auto; width: 100%;"  GenerateHeader="@GenerateHeaderOption.Sticky">
+        <FluentDataGrid OnRowClick="@( (FluentDataGridRow<Patient> row) => HandleRowClick(row) )" @ref="grid" Items=@patients?.AsQueryable() RowSize="DataGridRowSize.Medium" Pagination=@paginationState  DisplayMode="DataGridDisplayMode.Table" Style="overflow-x: auto; width: 100%;"  GenerateHeader="@GenerateHeaderOption.Sticky">
             <ChildContent>
-                <PropertyColumn Property="@(c => c.FirstName)" Sortable="true"  />
+                <PropertyColumn  Property="@(c => c.FirstName)" Sortable="true"  />
                 <PropertyColumn Property="@(c => c.LastName)" />
                 <PropertyColumn Property="@(c => c.Email)" Align="Align.Start" />
-                <PropertyColumn Property="@(c => c.DateOfBirth)" Align="Align.Start" />
+                <PropertyColumn Title="Date of Birth" Property="@(c => c.DateOfBirth.ToString("MM-dd-yyyy"))" Align="Align.Start" />
                 <TemplateColumn Title="Actions" Width="100px" Align="Align.Start">
                     <ChildContent Context="row">
                         @* @{
@@ -39,6 +39,9 @@
 
 
 @code {
+    [Parameter]
+    public List<Patient>? patients {get;set;}
+
     FluentDataGrid<Patient>? grid;
     FluentSwitch? _clearToggle;
 
@@ -62,18 +65,37 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        await SetItems();
+        Console.WriteLine("table mounted");
+        await SimulateDataLoading();
+        StateHasChanged();
+
         @* items = GenerateSampleGridData(500); *@
     }
-
-    private async Task SetItems() 
-    {
-        var patients = await httpClient.GetFromJsonAsync<List<Patient>>("http://localhost:5291/api/patient/list");
-        Console.WriteLine(patients);
-        items = patients?.AsQueryable();
+    
+    private void HandleRowClick(FluentDataGridRow<Patient> patient) {
+        Console.WriteLine(patient);
     }
 
-    private void ToggleItems()
+    private void SetItems() 
+    {
+        try {
+            @* var patients = await httpClient.GetFromJsonAsync<List<Patient>>("http://localhost:5291/api/patient/list");
+            
+            Console.WriteLine(patients); *@
+            Console.WriteLine(patients);
+
+            items = patients?.AsQueryable();
+
+            
+            
+
+        }
+        catch (Exception e) {
+            Console.WriteLine("Request failed to connect to server");
+        }
+    }
+
+    private async void ToggleItems()
     {
         if (_clearItems)
         {
@@ -96,5 +118,6 @@
         await Task.Delay(1500);
 
         grid?.SetLoadingState(false);
+
     }
 }

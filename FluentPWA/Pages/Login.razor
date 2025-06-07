@@ -7,9 +7,9 @@
 
 <FluentStack Width="100%" Class="bg-slate-800 h-screen relative" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
     <div class="w-96 h-[500px] z-[2] bg-slate-100 flex flex-col pt-8 px-8 items-center gap-10 rounded-md shadow-md shadow-slate-200">
-        <img src="images/dummy-logo.png" alt="placeholder-logo" class="w-40" />
+        <img src="images/dummy-logo-2.png" alt="placeholder-logo" class="w-40" />
         
-        <FluentLabel Weight="FontWeight.Bold" Style="font-size: x-large;">Company Login</FluentLabel>
+        <FluentLabel Weight="FontWeight.Bold" Style="font-size: x-large;">Login</FluentLabel>
 
         <div class="flex flex-col w-full">
             <FluentLabel Class="text-slate-400" Style="opacity: calc(0.75); font-size: small;">Username</FluentLabel>
@@ -22,14 +22,10 @@
         <button @onclick="HandleLogin" class="w-full bg-slate-800 p-2 rounded-sm text-white active:opacity-60 font-semibold">Continue</button>
     </div>
     <div class="absolute inset-0 z-[1]">
-        <img src="images/login-bg.jpg" class="object-fill w-full h-full" />
+        <img src="images/login-bg-2.jpg" class="object-fill w-full h-full" />
     </div>
-    <div class="absolute inset-0 z-[1] bg-slate-900/75">
+    <div class="absolute inset-0 z-[1] bg-slate-800/75">
     </div>
-
-    @if(startLogin) {
-        <RemoteAuthenticatorView Action="login" />
-    }
 
 </FluentStack>
 
@@ -57,13 +53,29 @@
         if(result.TryGetToken(out var token))
         {
             Console.WriteLine("Access token: " + token.Value);
+            Navigation.NavigateTo("/patient-search");
         }
         else if (result.Status == AccessTokenResultStatus.RequiresRedirect)
         {
             Console.WriteLine("Redirecting to: " + result.InteractiveRequestUrl);
+            InteractiveRequestOptions options = new InteractiveRequestOptions {
+                ReturnUrl =  "/auth/callback",
+                Interaction = InteractionType.SignIn
+            };
+            options.TryAddAdditionalParameter("domainHint", "gmail.com");
+            options.TryAddAdditionalParameter("loginHint", usernameInput + "@gmail.com");
+            @* startLogin = true;
+            StateHasChanged(); *@
+            Navigation.NavigateToLogin($"authentication/login?prompt=select_account", options);
+            Console.WriteLine(usernameInput);
+            
+            @* var url = $"https://login.microsoftonline.com/3616b4ce-5d4b-40f9-b9fc-d78a4ec66825/oauth2/v2.0/authorize?" +
+              $"client_id=0aa67102-12dd-4b82-b930-bf745ccc7c2f&response_type=code&redirect_uri={Uri.EscapeDataString("http://localhost/auth/callback")}" +
+              $"&response_mode=query&scope=openid profile email" +
+              $"&login_hint={Uri.EscapeDataString(usernameInput)}@gmail.com" +
+              $"&prompt=select_account";
 
-            startLogin = true;
-            StateHasChanged();
+            Navigation.NavigateTo(url, forceLoad: true); *@
         }
         else
         {

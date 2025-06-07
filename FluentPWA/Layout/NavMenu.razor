@@ -1,36 +1,30 @@
 ﻿<div class="navmenu bg-slate-200 p-2 flex flex-col gap-20 h-screen overflow-auto shadow-lg shadow-slate-400">
-    <nav aria-labelledby="main-menu" class="flex flex-col gap-10 sitenav h-screen overflow-auto">
+    <nav aria-labelledby="main-menu" class="flex flex-col gap-10 sitenav h-screen overflow-auto @(expanded ? "w-80" : "w-fit")">
         <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="false">
+            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
             <FluentNavLink Href="/patient-search" Icon="@(new Icons.Regular.Size20.Person())" IconColor="Color.Accent">Patients Search</FluentNavLink>
             <FluentNavLink Href="/staff-members" Icon="@(new Icons.Regular.Size20.CalendarWorkWeek())" IconColor="Color.Accent">Staff Members</FluentNavLink>
-            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-            <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-            <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-            <FluentNavGroup Id="FluentNavGroup 1" Icon="@(new Icons.Regular.Size24.LeafOne())" Title="Text 1">
-                <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-                <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-
-            </FluentNavGroup>
+            @* <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink> *@
+            @* <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink> *@
+       
 
             <div class="flex flex-col mt-10 gap-2 @(expanded ? "block" : "hidden")">
                 <FluentLabel Weight="FontWeight.Bolder">Recent Patients</FluentLabel>
-                <FluentNavGroup Id="FluentNavGroup 1" Icon="@(new Icons.Regular.Size24.LeafOne())" Title="Text 1">
-                    <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-                    <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-
+                <FluentNavGroup  Title="Item 6" Class="text-black" Icon="@(new Icons.Regular.Size20.EarthLeaf())">
+                    <FluentNavLink Icon="@(new Icons.Regular.Size20.LeafOne())">Item 6.1</FluentNavLink>
                 </FluentNavGroup>
 
             </div>
 
-            <div class="flex flex-col mt-10 gap-2 @(expanded ? "block" : "hidden")">
+            @* <div class="flex flex-col mt-10 gap-2 @(expanded ? "block" : "hidden")">
                 <FluentLabel Weight="FontWeight.Bolder">Recent Forms</FluentLabel>
-                <FluentNavGroup Id="FluentNavGroup 1" Icon="@(new Icons.Regular.Size24.LeafOne())" Title="Text 1">
+                <FluentNavGroup Id="FluentNavGroup 2" Icon="@(new Icons.Regular.Size24.LeafOne())" Title="Text 1">
                     <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
                     <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
 
                 </FluentNavGroup>
 
-            </div>
+            </div> *@
            
             
         </FluentNavMenu>

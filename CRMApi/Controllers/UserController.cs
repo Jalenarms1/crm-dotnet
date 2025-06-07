@@ -3,7 +3,6 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using CRMApi.Enums;
-using CRMApi.Models;
 using CRMApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
